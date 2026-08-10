@@ -1,0 +1,33 @@
+# ==========================================================================
+# Render deployment configuration
+#
+# Deploys as a native Python web service (no Docker required).
+#   Start command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+#
+# The build installs Python dependencies and the Playwright Chromium browser
+# (with its system libraries) in the same container image that runs the
+# service, so PDF rendering works out of the box.
+# ==========================================================================
+services:
+  - type: web
+    name: resume-renderer
+    runtime: python
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    autoDeploy: true
+    buildCommand: |
+      pip install -r requirements.txt
+      playwright install --with-deps chromium
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: LOG_LEVEL
+        value: INFO
+      - key: PLAYWRIGHT_NO_SANDBOX
+        value: "true"
+      - key: PDF_FORMAT
+        value: A4
+      - key: PDF_PREFER_CSS_PAGE_SIZE
+        value: "true"

@@ -1,0 +1,64 @@
+{#- -------------------------------------------------------------------------
+   Shared section renderers.
+
+   The markup is identical across all templates so that PDF and HTML output
+   stay stable; each template styles these class names in its own CSS.
+   ------------------------------------------------------------------------- -#}
+
+{% macro render_entries(items) -%}
+  {% for item in items %}
+  <article class="entry">
+    {% if item.title or item.meta %}
+    <div class="entry-head">
+      <div class="entry-titles">
+        {% if item.title %}<h3 class="entry-title">{{ item.title }}</h3>{% endif %}
+        {% if item.meta %}<p class="entry-subtitle">{{ item.meta }}</p>{% endif %}
+      </div>
+      {% if item.dates %}<span class="entry-dates">{{ item.dates }}</span>{% endif %}
+    </div>
+    {% endif %}
+    {% if item.tech %}<p class="entry-tech">{{ item.tech }}</p>{% endif %}
+    {% if item.bullets %}
+    <ul class="bullet-list">
+      {% for bullet in item.bullets %}<li>{{ bullet }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+    {% if item.paragraphs %}
+    {% for paragraph in item.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+    {% endif %}
+  </article>
+  {%- endfor %}
+{%- endmacro %}
+
+{% macro render_detail_list(items) -%}
+  <ul class="plain-list">
+    {% for item in items %}
+    <li class="detail-line">
+      <span class="detail-title">{{ item.title }}</span>
+      {% if item.meta %}<span class="detail-meta"> — {{ item.meta }}</span>{% endif %}
+      {% if item.dates %}<span class="detail-meta"> · {{ item.dates }}</span>{% endif %}
+      {% if item.url %}<span class="detail-meta"> · {{ item.url }}</span>{% endif %}
+      {% if item.description %}<p class="detail-desc">{{ item.description }}</p>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+{%- endmacro %}
+
+{% macro render_languages(languages) -%}
+  <p class="languages-line">
+    {%- for lang in languages -%}
+      {{ lang.name }}{% if lang.proficiency %} — {{ lang.proficiency }}{% endif %}{% if not loop.last %}, {% endif %}
+    {%- endfor -%}
+  </p>
+{%- endmacro %}
+
+{% macro render_additional_sections(sections) -%}
+  {% for section in sections %}
+  <section class="section" aria-label="{{ section.title }}">
+    <h2 class="section-title">{{ section.title }}</h2>
+    <ul class="bullet-list">
+      {% for item in section.bullets %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+  </section>
+  {%- endfor %}
+{%- endmacro %}

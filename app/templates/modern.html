@@ -1,0 +1,127 @@
+{% from "partials/_entries.html" import render_entries, render_detail_list, render_languages, render_additional_sections %}
+{% set contact_separator = " • " %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{ contact.name }} — Resume</title>
+  <style>
+    {{ font_faces }}
+    {{ base_css }}
+
+    /* ---- modern template overrides ---- */
+    :root {
+      --ink: #16212b;
+      --muted: #46566a;
+      --accent: #1565c0;
+      --rule: #cdd8e2;
+      --name-size: 21pt;
+    }
+
+    body { font-family: var(--font-sans); }
+
+    .resume-header {
+      text-align: left;
+      padding-bottom: 2.5mm;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .resume-headline { color: var(--accent); font-weight: 600; }
+
+    .section-title {
+      font-family: var(--font-sans);
+      color: var(--accent);
+      letter-spacing: 0.09em;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .entry-subtitle { color: var(--muted); }
+    .entry-dates { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="resume-header">
+      <h1 class="resume-name">{{ contact.name }}</h1>
+      {% if contact.title %}<p class="resume-headline">{{ contact.title }}</p>{% endif %}
+      {% if contact.lines %}<p class="contact-line">{{ contact.lines | join(contact_separator) }}</p>{% endif %}
+    </header>
+
+    {% if summary %}
+    <section class="section" aria-label="Professional Summary">
+      <h2 class="section-title">Professional Summary</h2>
+      {% for paragraph in summary %}<p class="summary">{{ paragraph }}</p>{% endfor %}
+    </section>
+    {% endif %}
+
+    {% if skills %}
+    <section class="section" aria-label="Skills">
+      <h2 class="section-title">Skills</h2>
+      <p class="skills-line">{{ skills | join(", ") }}</p>
+    </section>
+    {% endif %}
+
+    {% if experience %}
+    <section class="section" aria-label="Experience">
+      <h2 class="section-title">Experience</h2>
+      {{ render_entries(experience) }}
+    </section>
+    {% endif %}
+
+    {% if projects %}
+    <section class="section" aria-label="Projects">
+      <h2 class="section-title">Projects</h2>
+      {{ render_entries(projects) }}
+    </section>
+    {% endif %}
+
+    {% if education %}
+    <section class="section" aria-label="Education">
+      <h2 class="section-title">Education</h2>
+      {{ render_entries(education) }}
+    </section>
+    {% endif %}
+
+    {% if certifications %}
+    <section class="section" aria-label="Certifications">
+      <h2 class="section-title">Certifications</h2>
+      {{ render_detail_list(certifications) }}
+    </section>
+    {% endif %}
+
+    {% if languages %}
+    <section class="section" aria-label="Languages">
+      <h2 class="section-title">Languages</h2>
+      {{ render_languages(languages) }}
+    </section>
+    {% endif %}
+
+    {% if awards %}
+    <section class="section" aria-label="Awards">
+      <h2 class="section-title">Awards</h2>
+      {{ render_detail_list(awards) }}
+    </section>
+    {% endif %}
+
+    {% if volunteer %}
+    <section class="section" aria-label="Volunteer">
+      <h2 class="section-title">Volunteer</h2>
+      {{ render_entries(volunteer) }}
+    </section>
+    {% endif %}
+
+    {% if publications %}
+    <section class="section" aria-label="Publications">
+      <h2 class="section-title">Publications</h2>
+      {{ render_detail_list(publications) }}
+    </section>
+    {% endif %}
+
+    {% if additional_sections %}
+    {{ render_additional_sections(additional_sections) }}
+    {% endif %}
+  </main>
+</body>
+</html>

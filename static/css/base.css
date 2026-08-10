@@ -1,0 +1,176 @@
+/* ==========================================================================
+   resume-renderer — shared base styles
+   ATS-friendly · single column · print-ready · A4
+   ==========================================================================
+   The two font stacks below are substituted at startup by the template
+   manager (plain-text render, no HTML escaping).
+   ========================================================================== */
+
+:root {
+  --font-sans: {{ font_stack_sans }};
+  --font-serif: {{ font_stack_serif }};
+
+  /* palette */
+  --ink: #1b1b1f;
+  --muted: #45454e;
+  --accent: #1b1b1f;
+  --rule: #d8d8dd;
+  --page-bg: #ffffff;
+
+  /* type */
+  --text-size: 10.5pt;
+  --line-height: 1.5;
+  --name-size: 22pt;
+  --headline-size: 12pt;
+  --section-title-size: 10.5pt;
+  --entry-title-size: 11pt;
+  --contact-size: 9.5pt;
+
+  /* spacing */
+  --section-gap: 5mm;
+  --entry-gap: 3mm;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-size);
+  line-height: var(--line-height);
+  color: var(--ink);
+  background: var(--page-bg);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+h1, h2, h3, h4, p, ul, ol { margin: 0; padding: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ---- page layout -------------------------------------------------------- */
+.page { max-width: 210mm; margin: 0 auto; }
+
+/* ---- header ------------------------------------------------------------- */
+.resume-header { text-align: center; margin: 0 0 var(--section-gap); }
+.resume-name {
+  font-size: var(--name-size);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.resume-headline {
+  margin-top: 1mm;
+  font-size: var(--headline-size);
+  font-weight: 400;
+  color: var(--muted);
+}
+.contact-line {
+  margin-top: 1.5mm;
+  font-size: var(--contact-size);
+  color: var(--muted);
+}
+
+/* ---- sections ----------------------------------------------------------- */
+.section { margin: 0 0 var(--section-gap); }
+.section-title {
+  font-family: var(--font-serif);
+  font-size: var(--section-title-size);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 2mm;
+  padding-bottom: 1mm;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+
+/* ---- entries ------------------------------------------------------------ */
+.entry { margin: 0 0 var(--entry-gap); break-inside: avoid; }
+.entry:last-child { margin-bottom: 0; }
+.entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 3mm;
+}
+.entry-titles { display: block; }
+.entry-title { font-size: var(--entry-title-size); font-weight: 700; }
+.entry-subtitle { font-size: 10.5pt; color: var(--muted); }
+.entry-dates {
+  margin-left: auto;
+  font-size: var(--contact-size);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.entry-tech {
+  margin-top: 1mm;
+  font-size: var(--contact-size);
+  color: var(--muted);
+}
+.entry p { margin: 1mm 0 0; }
+
+/* ---- lists -------------------------------------------------------------- */
+.bullet-list {
+  margin: 1mm 0 0;
+  padding-left: 4.5mm;
+  list-style: disc;
+}
+.bullet-list li { margin-bottom: 0.7mm; }
+.bullet-list li:last-child { margin-bottom: 0; }
+
+.plain-list { list-style: none; padding-left: 0; margin: 0; }
+.plain-list li { margin-bottom: 0.7mm; }
+.plain-list li:last-child { margin-bottom: 0; }
+
+/* ---- summary ------------------------------------------------------------ */
+.summary { margin: 0; white-space: pre-line; }
+.summary + .summary { margin-top: 1mm; }
+
+/* ---- skills / languages ------------------------------------------------- */
+.skills-line { margin: 0; }
+.languages-line { margin: 0; }
+
+/* ---- certifications / awards / publications ----------------------------- */
+.detail-line { margin: 0 0 0.7mm; }
+.detail-line:last-child { margin-bottom: 0; }
+.detail-title { font-weight: 700; }
+.detail-meta { color: var(--muted); }
+.detail-desc { margin-top: 0.5mm; }
+
+/* ---- print / A4 ---------------------------------------------------------- */
+@page { size: A4; margin: 14mm 12mm; }
+
+@media print {
+  body { background: #ffffff; }
+  .page { max-width: none; }
+  a { color: inherit; }
+}
+
+/* ---- screen preview ------------------------------------------------------ */
+@media screen {
+  body { background: #ececf0; }
+  .page {
+    background: var(--page-bg);
+    padding: 14mm 12mm;
+    min-height: 297mm;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* ---- responsive ---------------------------------------------------------- */
+@media screen and (max-width: 700px) {
+  :root {
+    --text-size: 12px;
+    --name-size: 24px;
+    --headline-size: 14px;
+    --entry-title-size: 13px;
+    --section-title-size: 12px;
+  }
+  .page { padding: 10mm 6mm; min-height: auto; box-shadow: none; }
+  .entry-head { display: block; }
+  .entry-dates { margin-left: 0; white-space: normal; }
+}
